@@ -1,12 +1,16 @@
-import React from "react";
+import React, { Fragment, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { GET_WEATHER_QUERY } from "../graphql/Queries";
+import Card from "./UI/Card";
+import temperatureConverter from "../Utils/temperatureConverter";
+import capitalizeFirstLetter from "../Utils/capitalizeFirstLetter";
 
 function Home() {
+	const [cityName, setCityName] = useState("");
 	const [getWeather, { loading, data, error }] = useLazyQuery(
 		GET_WEATHER_QUERY,
 		{
-			variables: { name: "Vancouver" },
+			variables: { name: cityName },
 		}
 	);
 
@@ -16,11 +20,61 @@ function Home() {
 	}
 
 	return (
-		<div className="home">
-			<h1>Search for weather</h1>
-			<input type="text" placeholder="City name..." />
-			<button onClick={() => getWeather()}>Search</button>
-		</div>
+		<Fragment>
+			<Card className="input">
+				<h1>Search for weather</h1>
+				<input
+					type="text"
+					placeholder="City name..."
+					onInput={(e) => setCityName(e.target.value)}
+				/>
+				<button onClick={(cityName) => getWeather(cityName)}>
+					Search
+				</button>
+			</Card>
+			{data && (
+				<Card className="data">
+					<div className="overview">
+						<div>
+							{data.getCityByName.name +
+								", " +
+								data.getCityByName.country}
+						</div>
+						<div>
+							Current Temperature:{" "}
+							{temperatureConverter(
+								data.getCityByName.weather.temperature.actual
+							) + "°C"}
+						</div>
+						<div>
+							{capitalizeFirstLetter(
+								data.getCityByName.weather.summary.description
+							)}
+						</div>
+					</div>
+					<div className="temperatureDetail">
+						<div>
+							Feels Like:{" "}
+							{temperatureConverter(
+								data.getCityByName.weather.temperature.feelsLike
+							) + "°C"}
+						</div>
+						<div>
+							Min:{" "}
+							{temperatureConverter(
+								data.getCityByName.weather.temperature.min
+							) + "°C"}
+						</div>
+						<div>
+							Max:{" "}
+							{temperatureConverter(
+								data.getCityByName.weather.temperature.max
+							) + "°C"}
+						</div>
+					</div>
+				</Card>
+			)}
+		</Fragment>
 	);
 }
 
