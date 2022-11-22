@@ -34,7 +34,7 @@ function Home() {
 			</Card>
 			{data && (
 				<Card className="data">
-					<div className="overview">
+					<Card className="overview">
 						<div>
 							{data.getCityByName.name +
 								", " +
@@ -51,8 +51,8 @@ function Home() {
 								data.getCityByName.weather.summary.description
 							)}
 						</div>
-					</div>
-					<div className="temperatureDetail">
+					</Card>
+					<Card className="temperatureDetail">
 						<div>
 							Feels Like:{" "}
 							{temperatureConverter(
@@ -71,7 +71,7 @@ function Home() {
 								data.getCityByName.weather.temperature.max
 							) + "°C"}
 						</div>
-					</div>
+					</Card>
 				</Card>
 			)}
 		</Fragment>
