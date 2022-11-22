@@ -1,4 +1,4 @@
-import "./App.css";
+import styles from "./App.module.css";
 import Home from "./Pages/Home";
 import { ApolloProvider, ApolloClient, InMemoryCache } from "@apollo/client";
 
@@ -9,8 +9,8 @@ function App() {
 	});
 
 	return (
-		<ApolloProvider client={client}>
-			<Home />
+		<ApolloProvider client={client} className={styles.app}>
+			<Home className={styles.app} />
 		</ApolloProvider>
 	);
 }

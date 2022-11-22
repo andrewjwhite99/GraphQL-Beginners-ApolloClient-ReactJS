@@ -2,6 +2,7 @@ import React, { Fragment, useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { GET_WEATHER_QUERY } from "../graphql/Queries";
 import Card from "./UI/Card";
+import styles from "./Home.module.css";
 import temperatureConverter from "../Utils/temperatureConverter";
 import capitalizeFirstLetter from "../Utils/capitalizeFirstLetter";
 
@@ -20,7 +21,7 @@ function Home() {
 	}
 
 	return (
-		<Fragment>
+		<Fragment className={styles.home}>
 			<Card className="input">
 				<h1>Search for weather</h1>
 				<input
@@ -35,6 +36,7 @@ function Home() {
 			{data && (
 				<Card className="data">
 					<Card className="overview">
+						<h1>Overview</h1>
 						<div>
 							{data.getCityByName.name +
 								", " +
@@ -54,6 +56,7 @@ function Home() {
 					</Card>
 					<Card className="temperatureDetail">
 						<div>
+							<h1>Temperature Details</h1>
 							Feels Like:{" "}
 							{temperatureConverter(
 								data.getCityByName.weather.temperature.feelsLike
